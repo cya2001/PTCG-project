@@ -57,14 +57,36 @@
         width: 100%;
         height: 100%;
         display: flex;
-        flex-direction: row;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;    
+        max-width: 1000px;
+        margin: auto;
+        margin-top: 80px;
 
     }
-    .cardshowbox1 .cardshowbox2 .cardshowbox3 .cardshowbox4 .cardshowbox5{
-        position: absolute;
+    /* .cardshowbox1 .cardshowbox2 .cardshowbox3 .cardshowbox4 .cardshowbox5{
+        flex: 0 0 calc(20% - 20px);
+        margin: 10px;
+    } */
+    .cardshowbox1,
+    .cardshowbox2,
+    .cardshowbox3 {
+        width: 40%;
+        margin: -50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
+    .cardshowbox4,
+    .cardshowbox5 {
+        width: 33.3%;
+        position: relative;
+        top: -50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     /* .cardshowbox1 .cardshowbox2 .cardshowbox3 {
         z-index: 2;
@@ -89,6 +111,6 @@
 .showbox-img{
     width: 215px;
     height: 300px;
-    margin: 15px;
+    margin: 10px;
 }
 </style>

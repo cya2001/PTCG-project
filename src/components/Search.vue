@@ -123,9 +123,9 @@
 }
 .card-container{
   display:flex;
-  justify-content: center; /* 控制垂直方向居中 */
-  align-items: center; /* 控制水平方向居中 */
-  text-align: center; /* 控制文本居中 */
+  justify-content: center;
+  align-items: center;
+  text-align: center; 
   flex-wrap: wrap;
   gap: 10px;
 }

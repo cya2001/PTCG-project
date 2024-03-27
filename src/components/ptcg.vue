@@ -38,7 +38,7 @@
       handleScroll(){
         const scrollPostion = document.documentElement.scrollTop
         // console.log(scrollPostion)
-        if (scrollPostion>200){
+        if (scrollPostion>300){
           this.showNewInput = true
         }else{
           this.showNewInput = false
@@ -87,7 +87,7 @@
 
       </form>
 
-      <form v-show="showNewInput" class="new-form-box" @submit.prevent="submitForm">
+      <form v-if="showResult"  v-show="showNewInput" class="new-form-box" @submit.prevent="submitForm">
         <div class="search-box">
             <select v-model="searchOption" class="form-control mb-2" id="search-option" style="width: 30%;">
               <option value="collection">按组合包名称搜索</option>
@@ -129,18 +129,16 @@
 <style >
 .form-box{
   display: flex;
-  flex-direction: column; /* 根据需要选择flex方向，默认为row */
-  justify-content: center; /* 控制垂直方向居中 */
-  align-items: center; /* 控制水平方向居中 */
-  /* text-align: center; 控制文本居中 */
-  /* position: fixed; */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 }
 .new-form-box{
   display: flex;
-  flex-direction: column; /* 根据需要选择flex方向，默认为row */
-  justify-content: center; /* 控制垂直方向居中 */
-  align-items: center; /* 控制水平方向居中 */
-  /* text-align: center; 控制文本居中 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -165,13 +163,13 @@
 .search-box{
   width: 50%;
   display: flex;
-  flex-direction: row; /* 子项的主轴为水平方向 */
+  flex-direction: row; 
 }
 
 .rarity-check{
   /* width: 50%; */
   display: flex;
-  flex-direction: row; /* 子项的主轴为水平方向 */
+  flex-direction: row; 
 }
 
 .navi-box{
