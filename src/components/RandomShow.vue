@@ -37,15 +37,7 @@
                 const imagePath = `random\\${random1}.png`;
                 return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
             }
-
-
         },
-
-
-
-
-
-
     }
 
 
