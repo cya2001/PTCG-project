@@ -1,0 +1,7 @@
+* text=auto
+
+# 设置换行符约定为 LF
+*.js text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+# 添加其他需要的文件类型
