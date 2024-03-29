@@ -111,31 +111,31 @@
 </script>
 
 <style>
-.pkmn-card {
-  width: 215px;
-  height: 300px;
-  margin: 15px;
-  transition: transform 0.3s ease;
+  .pkmn-card {
+    width: 215px;
+    height: 300px;
+    margin: 15px;
+    transition: transform 0.3s ease;
 
-}
-.pkmn-card:hover {
-  transform: scale(1.2);
-}
-.card-container{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center; 
-  flex-wrap: wrap;
-  gap: 10px;
-}
+  }
+  .pkmn-card:hover {
+    transform: scale(1.2);
+  }
+  .card-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
-* {
-  box-sizing: border-box;
-}
-.card-button{
-  border: none;
-  background-color: transparent;
-  padding:0;
-}
+  * {
+    box-sizing: border-box;
+  }
+  .card-button{
+    border: none;
+    background-color: transparent;
+    padding:0;
+  }
 </style>

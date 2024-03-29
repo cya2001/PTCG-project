@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Navi from '../components/Navi.vue';
 import ptcg from '../components/ptcg.vue';
+import canlendar from '../components/calendar.vue';
 
 const routes = [
     {
@@ -11,8 +12,10 @@ const routes = [
         path: '/ptcg',
         component: ptcg
     },
-
-  // 其他路由规则
+    {
+        path: '/calendar',
+        component:canlendar
+    },
 ];
 
 const router = createRouter({

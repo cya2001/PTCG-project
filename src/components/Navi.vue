@@ -3,6 +3,7 @@
       <h1>导航页面</h1>
       <ul>
         <li><router-link to="/ptcg">PTCG</router-link></li>
+        <li><router-link to="/Calendar">Calendar</router-link></li>
       </ul>
     </div>
   </template>
@@ -14,8 +15,8 @@
   </script>
   
   <style>
-  /* 添加适当的样式来美化导航页面 */
-  .navigation {
-    /* 样式代码 */
-  }
+  
+    .navigation {
+      /* 样式代码 */
+    }
   </style>

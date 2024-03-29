@@ -19,10 +19,6 @@
 </template>
 
 <script>
-
-    import ptcg from "../../static/PTCG-CHS-Datasets-main/ptcg_chs_infos.json"
-    import Details from "./Details.vue";
-    import Search from './Search.vue';
     export default{
         
         data(){
@@ -57,10 +53,7 @@
         margin-top: 80px;
 
     }
-    /* .cardshowbox1 .cardshowbox2 .cardshowbox3 .cardshowbox4 .cardshowbox5{
-        flex: 0 0 calc(20% - 20px);
-        margin: 10px;
-    } */
+
     .cardshowbox1,
     .cardshowbox2,
     .cardshowbox3 {
@@ -80,29 +73,11 @@
         justify-content: center;
         align-items: center;
     }
-    /* .cardshowbox1 .cardshowbox2 .cardshowbox3 {
-        z-index: 2;
-    }
-        
-    .cardshowbox4 .cardshowbox5{
-        z-index: 3;
-    }
-    .cardshowbox4{
-        transform: translate(-50%, -50%);
-    }
-    .cardshowbox5{
-        transform: translate(-50%, -50%);
 
-    }
-    .showbox-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    } */
 
-.showbox-img{
-    width: 215px;
-    height: 300px;
-    margin: 10px;
-}
+    .showbox-img{
+        width: 215px;
+        height: 300px;
+        margin: 10px;
+    }
 </style>
