@@ -1,17 +1,21 @@
-<!-- <script setup>
-  import Details from './Details.vue'
-</script> -->
-
 <template>
   <div class = "card-container">
-    <div  v-for="image in images" key="image">
-      <!-- <p>"{{image}}"</p> -->
+    <div  v-for="image in paginatedImages" key="image">
       <button class="card-button">
         <img class = "pkmn-card" :src="requireImage(image)" alt="Image" @click="showCardInfo(image)"/>
       </button>
     </div>
   </div> 
-  <Details v-if="selectedCard" :selectedCard="selectedCard" :requireImage="requireImage" @close ='hideCardInfo'/>
+  <div class="pagination">
+    <button class = "page-button" :disabled = "currentPage == 1" @click="currentPage -= 1">上一页</button>
+      <div v-for="page in totalPages" :key="page" 
+      :class="{ 'page-item': true, active: currentPage === page }" @click="currentPage = page">
+      {{ page }}
+      </div>
+    <button class = "page-button" :disabled = "currentPage === totalPages" @click="currentPage += 1">下一页</button>
+  </div>
+
+  <Details v-if="selectedCard" :selectedCard="selectedCard" @close ='hideCardInfo'/>
 </template>
   
 <script>
@@ -20,7 +24,7 @@
   
   export default{
 
-    props:['query','searchOption','checkValue'],
+    props:['submit','query','searchOption','checkValue'],
 
     emits:['query-received'],
 
@@ -31,8 +35,21 @@
     data(){
       return {
         images:[],
-        selectedCard:null,
+        selectedCard:"",
+        currentPage:1,
+        pageSize:20,
       }
+    },
+
+    computed:{
+      paginatedImages() {
+        const startIndex = (this.currentPage - 1) * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        return this.images.slice(startIndex, endIndex);
+      },
+      totalPages() {
+        return Math.ceil(this.images.length / this.pageSize);
+      },
     },
 
     methods:{
@@ -49,22 +66,20 @@
         
         console.log('接收到查询:',this.query,this.checkValue);
         this.$emit('query-received',this.query+this.checkValue)
+
       },
       showCardInfo(image){
         this.selectedCard = image
       },
       hideCardInfo(){
-        this.selectedCard = null
+        this.selectedCard = ""
       },
     },
 
     watch:{
-      query:{
-        handler:'handleQuery',
-      },
-      checkValue:{
+      submit:{
         handler:'handleQuery'
-      }
+      },
     },
     components:{
       Details
@@ -107,7 +122,6 @@
       }
       return images
     }
-
 </script>
 
 <style>
@@ -130,12 +144,38 @@
     gap: 10px;
   }
 
-  * {
-    box-sizing: border-box;
-  }
   .card-button{
     border: none;
     background-color: transparent;
     padding:0;
+  }
+  .pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .page-button{
+    display: inline-block;
+    outline: none;
+    border: none;
+    background-color:white;
+  }
+  .page-item {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-color: #e9e6e6;
+    text-align: center;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 4px;
+  }
+  .page-item:hover{
+    cursor: pointer;
+  }
+  .active {
+    background-color: rgb(247, 232, 32);
+    color: #fff;
   }
 </style>

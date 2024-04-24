@@ -1,38 +1,63 @@
 <template>
     <div class="card-show">
         <div class="cardshowbox1">
-            <img class="showbox-img" :src="randomShow()" alt="rimage">
+            <img class="showbox-img" :src="requireImage(randomCard[0])" alt="rimage" @click = "showCardInfo(randomCard[0])">
         </div>
         <div class="cardshowbox2">
-            <img class="showbox-img"  :src="randomShow()" alt="rimage">
+            <img class="showbox-img" :src="requireImage(randomCard[1])" alt="rimage" @click = "showCardInfo(randomCard[1])">
         </div>
         <div class="cardshowbox3">
-            <img class="showbox-img"  :src="randomShow()" alt="rimage">
+            <img class="showbox-img" :src="requireImage(randomCard[2])" alt="rimage" @click = "showCardInfo(randomCard[2])">
         </div>
         <div class="cardshowbox4">
-            <img class="showbox-img"  :src="randomShow()" alt="rimage">
+            <img class="showbox-img" :src="requireImage(randomCard[3])" alt="rimage" @click = "showCardInfo(randomCard[3])">
         </div>
         <div class="cardshowbox5">
-            <img class="showbox-img"  :src="randomShow()" alt="rimage">
+            <img class="showbox-img" :src="requireImage(randomCard[4])" alt="rimage" @click = "showCardInfo(randomCard[4])">
         </div>
     </div>
+    <Details v-show="selectedCard" :selectedCard="selectedCard"  @close ='hideCardInfo'/>
 </template>
 
 <script>
+    import Details from './Details.vue'
+
     export default{
         
         data(){
             return{
-                
+                selectedCard:"",
+                randomCard:[],
+                randomImagePath: '',
             }
 
         },
+        created(){
+            this.randomShow()
+        },
         methods:{
-            randomShow(){
-                const random1 = Math.floor(Math.random() * 109)+1;
-                const imagePath = `random\\${random1}.png`;
+            requireImage(imagePath){
                 return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
-            }
+            },
+            showCardInfo(image){
+                this.selectedCard = image
+            },
+            randomShow(){
+                for(let i = 0;i<5;i++){
+                    let random1 = Math.floor(Math.random() * 109)+1;
+                    let imagePath = `random\\${random1}.png`;
+                    this.randomImagePath = new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href
+                    this.randomCard.push(imagePath)
+                }
+                console.log(this.randomCard)
+                // return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
+            },
+            hideCardInfo(){
+                this.selectedCard = ""
+            },
+        },
+        components:{
+            Details
         },
     }
 
@@ -74,10 +99,14 @@
         align-items: center;
     }
 
-
     .showbox-img{
         width: 215px;
         height: 300px;
         margin: 10px;
+        transition: transform 0.3s ease;
+
+    }
+    .showbox-img:hover{
+        transform: scale(1.2);
     }
 </style>

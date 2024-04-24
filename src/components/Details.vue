@@ -32,10 +32,6 @@ import ptcg from "../../static/PTCG-CHS-Datasets-main/ptcg_chs_infos.json"
                 type:String,
                 required:true
             },
-            requireImage:{
-                type: Function,
-                required:true
-            }
         },
 
         data(){
@@ -50,6 +46,9 @@ import ptcg from "../../static/PTCG-CHS-Datasets-main/ptcg_chs_infos.json"
         },
         
         methods:{
+            requireImage(imagePath){
+                return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
+            },
             handleCardInfoClick(event){
                 const targetElement = event.target
                 const cardInfoElement = document.querySelector('.cardinfo-content');

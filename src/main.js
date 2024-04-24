@@ -3,9 +3,16 @@ import App from './App.vue'
 import router from './router/router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
-createApp(App).use(router).mount('#app');
-
+const app = createApp(App)
+app.use(router)
+app.use(ElementPlus)
+app.mount('#app')
+// createApp(App).use(router).mount('#app');
+// createApp(App).use(Element)
+// createApp(App).use(Select)
 
 
 

@@ -2,9 +2,96 @@
     import router from '@/router/router';
     import Header from './Header.vue';
     import Search from './Search.vue';
+    import Details from './Details.vue';
     import RandomShow from './RandomShow.vue';
     import { throttle } from 'lodash';
 </script>
+
+<template>
+  <Header/>
+
+  <main>
+    <div class="main-box">
+
+      <form v-show="!showNewInput" class="form-box" @submit.prevent="submitForm">
+
+        <div class="search-info">
+          <label class="sr-only" for ="search">Type in Pokemon Name</label>
+        </div>
+
+        <div class="search-box">
+          <div class="input-container">
+            <select v-model="searchOption" class="form-control mb-2" id="search-option" style="width: 30%;">
+              <option value="collection">按组合包名称搜索</option>
+              <option value="card">按卡片名称搜索</option>
+            </select>
+            <!-- <label class="sr-only" for ="search">Type in Pokemon Name</label> -->
+            <input type = "text" v-model="query" class="form-control mb-2" id = "search" placeholder="伊布" @input="handleInput">
+            <button type="submit" class="btn btn-primary mb-2" id="submit-button" style="width: 20%;">Submit</button>
+            
+          
+          </div>
+            <ul v-if="showSuggestion" class="suggestion-list" >
+              <li v-for="suggestion in suggestions" :key="suggestion" @click="selectSuggestion(suggestion)">
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+
+        <div class="rarity-check">
+          <li class="cheack-box" style="list-style-type: none;">
+            <div v-for="label in Object.keys(checkboxLabels)" :key="label" class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" :id="label" :value="label" v-model="checkValue"> 
+              <label  :for="label">{{ label }}</label>
+            </div>
+          </li>
+        </div>
+
+      </form>
+
+      <form v-if="showResult"  v-show="showNewInput" class="new-form-box" @submit.prevent="submitForm">
+        <div class="new-search-box">
+            <select v-model="searchOption" class="form-control mb-2" id="search-option" style="width: 30%;">
+              <option value="collection">按组合包名称搜索</option>
+              <option value="card">按卡片名称搜索</option>
+            </select>
+            <input type = "text" v-model.lazy="query" class="form-control mb-2" id = "search" placeholder="伊布" @input="handleInput">
+            <button type="submit" class="btn btn-primary mb-2" id="submit-button">Submit</button>
+        </div>
+
+        <div class="rarity-check">
+          <li class="cheack-box" style="list-style-type: none;">
+            <div v-for="label in Object.keys(checkboxLabels)" :key="label" class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" :id="label" :value="label" v-model="checkValue"> 
+              <label  :for="label">{{ label }}</label>
+            </div>
+          </li>
+        </div>
+      </form>
+      
+      <Search v-if="showResult" :submit = "submit" :query="query" :searchOption="searchOption" :checkValue="checkValue" @query-received="handleQueryReceived" />
+
+      <RandomShow  v-if="!showResult"/> 
+      <!-- <Details v-if="selectedCard" :selectedCard="selectedCard" :requireImage="requireImage" @close ='hideCardInfo'/> -->
+      
+    </div>
+    <div  v-if="showResult" class="navi-box">
+        <div class="navi-button">
+            <router-link to="/">
+                <img class="navi-img" src="../assets/navi.svg">
+            </router-link>
+        </div>
+        <div class="up-button" >
+            <button class="up-button-img">
+                <img class="up-img" src="../assets/Pikachu.svg" @click="srcollToTop">
+            </button>
+        </div>
+    
+    </div>
+   
+  </main>
+</template>
+
 
 <script>
   import poke from "../../static/PTCG-CHS-Datasets-main/pokemon.json"
@@ -22,6 +109,7 @@
         suggestions:[],
         showSuggestion:false,
         suggestionCache:[],
+        submit: false,
       };
     },
     mounted(){
@@ -30,6 +118,7 @@
     
     methods:{
       submitForm(){
+        this.submit = true
         this.sendQuery(this.query);
       },
       sendQuery(query){
@@ -37,7 +126,8 @@
         this.showResult = true
       },
       handleQueryReceived(result){
-        console.log('App接收到查询:',result);
+        console.log('App接收到查询:',result)
+        this.submit = false
       },
       handleScroll(){
         const scrollPostion = document.documentElement.scrollTop
@@ -107,86 +197,6 @@
   };
 </script>
 
-<template>
-  <Header />
-
-  <main>
-    <div class="main-box">
-
-      <form v-show="!showNewInput" class="form-box" @submit.prevent="submitForm">
-
-        <div class="search-info">
-          <label class="sr-only" for ="search">Type in Pokemon Name</label>
-        </div>
-
-        <div class="search-box">
-          <div class="input-container">
-            <select v-model="searchOption" class="form-control mb-2" id="search-option" style="width: 30%;">
-              <option value="collection">按组合包名称搜索</option>
-              <option value="card">按卡片名称搜索</option>
-            </select>
-            <!-- <label class="sr-only" for ="search">Type in Pokemon Name</label> -->
-            <input type = "text" v-model="query" class="form-control mb-2" id = "search" placeholder="伊布" @input="handleInput">
-            <button type="submit" class="btn btn-primary mb-2" id="submit-button" style="width: 20%;">Submit</button>
-            
-          
-          </div>
-            <ul v-if="showSuggestion" class="suggestion-list" >
-              <li v-for="suggestion in suggestions" :key="suggestion" @click="selectSuggestion(suggestion)">
-                {{ suggestion }}
-              </li>
-            </ul>
-        </div>
-
-        <div class="rarity-check">
-          <li class="cheack-box" style="list-style-type: none;">
-            <div v-for="label in Object.keys(checkboxLabels)" :key="label" class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" :id="label" :value="label" v-model="checkValue"> 
-              <label  :for="label">{{ label }}</label>
-            </div>
-          </li>
-        </div>
-
-      </form>
-
-      <form v-if="showResult"  v-show="showNewInput" class="new-form-box" @submit.prevent="submitForm">
-        <div class="new-search-box">
-            <select v-model="searchOption" class="form-control mb-2" id="search-option" style="width: 30%;">
-              <option value="collection">按组合包名称搜索</option>
-              <option value="card">按卡片名称搜索</option>
-            </select>
-            <input type = "text" v-model.lazy="query" class="form-control mb-2" id = "search" placeholder="伊布">
-            <button type="submit" class="btn btn-primary mb-2" id="submit-button">Submit</button>
-        </div>
-
-        <div class="rarity-check">
-          <li class="cheack-box" style="list-style-type: none;">
-            <div v-for="label in Object.keys(checkboxLabels)" :key="label" class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" :id="label" :value="label" v-model="checkValue"> 
-              <label  :for="label">{{ label }}</label>
-            </div>
-          </li>
-        </div>
-      </form>
-      <RandomShow  v-if="!showResult"/> 
-      <Search v-if="showResult" :query="query" :searchOption="searchOption" :checkValue="checkValue" @query-received="handleQueryReceived" />
-    </div>
-    <div  v-if="showResult" class="navi-box">
-        <div class="navi-button">
-            <router-link to="/">
-                <img class="navi-img" src="../assets/navi.svg">
-            </router-link>
-        </div>
-        <div class="up-button" >
-            <button class="up-button-img">
-                <img class="up-img" src="../assets/Pikachu.svg" @click="srcollToTop">
-            </button>
-        </div>
-    
-    </div>
-   
-  </main>
-</template>
 
 <style >
   .form-box{
