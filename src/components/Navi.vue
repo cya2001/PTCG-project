@@ -4,6 +4,7 @@
       <ul>
         <li><router-link to="/ptcg">PTCG</router-link></li>
         <li><router-link to="/Calendar">Calendar</router-link></li>
+        <li><router-link to="/todolist">todolist</router-link></li>
       </ul>
     </div>
   </template>
