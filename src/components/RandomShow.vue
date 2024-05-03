@@ -49,7 +49,7 @@
                     this.randomImagePath = new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href
                     this.randomCard.push(imagePath)
                 }
-                console.log(this.randomCard)
+                // console.log(this.randomCard)
                 // return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
             },
             hideCardInfo(){

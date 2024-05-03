@@ -26,7 +26,7 @@
               <option value="card">按卡片名称搜索</option>
             </select>
             <!-- <label class="sr-only" for ="search">Type in Pokemon Name</label> -->
-            <input type = "text" v-model="query" class="form-control mb-2" id = "search" placeholder="伊布" @input="handleInput">
+            <input type = "text" v-model="query" class="form-control mb-2" id = "search" placeholder="" @input="handleInput" @click="handleSuggest">
             <button type="submit" class="btn btn-primary mb-2" id="submit-button" style="width: 20%;">Submit</button>
             
           
@@ -101,7 +101,7 @@
       return{
         checkboxLabels : {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
         'S':'7','SR':'8','SSR':'9','CHR':'11','A':'12','CSR':'13','HR':'98','UR':'99'},
-        query:'伊布',
+        query:'',
         showResult: false,
         searchOption:'card',
         checkValue:[],
@@ -115,6 +115,12 @@
     mounted(){
       window.addEventListener('scroll',throttle(this.handleScroll, 200))
     },
+    created() {
+      window.addEventListener('click', this.handleClickOutside);
+    },
+    beforeDestroy() {
+      window.removeEventListener('click', this.handleClickOutside);
+    },
     
     methods:{
       submitForm(){
@@ -124,6 +130,7 @@
       sendQuery(query){
         console.log('发送查询:',query)
         this.showResult = true
+        this.suggestionCache.push(this.query)
       },
       handleQueryReceived(result){
         console.log('App接收到查询:',result)
@@ -157,21 +164,16 @@
         }, 300);
       },
       generateSuggestions(query){
-        if(this.suggestionCache[query]){
-          // console.log("result from cache")
-          // console.log(this.suggestionCache)
-          return this.suggestionCache[query]
-        }
+        console.log(this.suggestionCache)
+        let suggestions = []
         const data = poke
-        const suggestions = []
-        for(const item of data){
-          const name = item[2]
-          if (name.includes(query)){
-            suggestions.push(name)
-            this.suggestionCache[query] = suggestions
+        for(let item of data){
+          let item_name = item[2]
+          if (item_name.includes(query)){
+            suggestions.push(item_name)
           }
         }
-        // console.log("result from generate")
+
         return suggestions.slice(0,10)
       },
       selectSuggestion(suggestion){
@@ -183,17 +185,29 @@
         }
  
       },
-      handleInputClose(event){
-        const targetElement = event.target
-        const suggestionElement = document.querySelector('suggestion-list')
-        if(!suggestionElement.contains(targetElement)){
-          this.showSuggestion = false
+      handleClickOutside(event){
+        if(this.showSuggestion){
+          const targetElement = event.target
+          const suggestionElement = document.getElementsByClassName('search-box')[0]
+          if(!suggestionElement.contains(targetElement)){
+            this.showSuggestion = false
+          }
         }
       },
+      handleSuggest(){
+        // console.log(this.suggestionCache)
+        if (this.suggestionCache.length) {
+          this.suggestions = this.suggestionCache;
+          this.showSuggestion = true;
+          } else {
+          this.showSuggestion = false;
+        }
+        },
     },
     components:{
       Search
     },
+    
   };
 </script>
 
