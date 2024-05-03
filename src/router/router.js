@@ -3,6 +3,7 @@ import Navi from '../components/Navi.vue';
 import ptcg from '../components/ptcg.vue';
 import canlendar from '../components/calendar.vue';
 import todolist from '../components/todolist/App.vue';
+import cardcart from '../components/cardcart/App.vue';
 import App from '@/App.vue';
 
 const routes = [
@@ -21,7 +22,11 @@ const routes = [
     {
         path: '/todolist',
         component:todolist
-    }
+    },
+    {
+        path: '/cardcart',
+        component:cardcart
+    },
 ];
 
 const router = createRouter({

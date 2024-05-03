@@ -14,6 +14,7 @@
     "core-js": "^3.37.0",
     "element-plus": "^2.7.1",
     "jquery": "^3.7.1",
+    "less": "^4.2.0",
     "lodash": "^4.17.21",
     "pokemontcgsdk": "^2.0.0",
     "popper.js": "^1.16.1",
