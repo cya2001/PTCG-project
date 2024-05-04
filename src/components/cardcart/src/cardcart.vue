@@ -2,14 +2,14 @@
     <div class="item-container" >
         <div class="item-card" v-for="item in cardlist" :key="item.id">
             <div class="form-check check-box">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <input class="form-check-input" type="checkbox" v-model="item.selected" :id="item.id" @change="handleChangeCount">
             </div>
             <img class="card-image" :src="item.img">
             <div class="card-info">
                 <div class="item-name">{{ item.name }}</div>
                 <div class="item-value">${{ item.value }}</div>
-                <el-input-number class="count" v-model="num" 
-                    @change="handleChange" :min="1" :max="10" label="描述文字">
+                <el-input-number class="count" v-model="item.count" 
+                    @change="handleChangeCount"   label="描述文字">
                 </el-input-number>
             </div>
             
@@ -21,6 +21,7 @@
 
 export default {
     name: "App",
+    
     props:{
         cardlist:{
             type:Array,
@@ -30,7 +31,12 @@ export default {
     },
     data(){
         return{
-            // cardlist:'',
+            // newCardList:[],
+        }
+    },
+    methods:{
+        handleChangeCount(updatedCardList){
+            // console.log(this.cardlist)
         }
     }
 
@@ -84,7 +90,15 @@ export default {
         height: 50px;
         position: absolute;
         right: 30px;
-        bottom: 50px
+        bottom: 50px;
+
     }
+    /deep/.el-input__inner{
+        font-size: 30px;
+        font-style: italic;
+    }
+
 }
+
+
 </style>
