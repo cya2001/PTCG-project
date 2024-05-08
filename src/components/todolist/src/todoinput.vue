@@ -30,6 +30,6 @@ export default{
 <style scoped>
 .input-group{
     width: 500px;
-    margin: 100px auto;
+    margin: 50px auto;
 }
 </style>
