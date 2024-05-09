@@ -103,10 +103,13 @@
         width: 215px;
         height: 300px;
         margin: 10px;
-        transition: transform 0.3s ease;
+        box-shadow: 0px 5px 12px rgba(0,0,0,0.5);
+        transition: all 0.3s;
 
     }
     .showbox-img:hover{
-        transform: scale(1.2);
+        /* transform: scale(1.2); */
+        transform: translateY(-8px) scale(1.01,1.01);
+        box-shadow: 0px 10px 20px rgba(0,0,0,0.3);
     }
 </style>

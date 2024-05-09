@@ -129,11 +129,12 @@
     width: 215px;
     height: 300px;
     margin: 15px;
-    transition: transform 0.3s ease;
-
+    transition: all 0.3s;
+    box-shadow: 0px 5px 12px rgba(0,0,0,0.5);
   }
   .pkmn-card:hover {
-    transform: scale(1.2);
+    transform: translateY(-8px) scale(1.01,1.01);
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.3);
   }
   .card-container{
     display:flex;
