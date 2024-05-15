@@ -155,6 +155,7 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
+    flex-wrap: wrap;
   }
   .page-button{
     display: inline-block;
