@@ -64,7 +64,7 @@
 
 </script>
 
-<style>
+<style scoped>
     .card-show {
         position: relative;
         width: 100%;

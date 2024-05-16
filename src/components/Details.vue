@@ -110,7 +110,7 @@ import ptcg from "../../static/PTCG-CHS-Datasets-main/ptcg_chs_infos.json"
     }
 </script>
 
-<style>
+<style scoped>
 .cardinfo-hideback{
     position: fixed;
     top: 0;

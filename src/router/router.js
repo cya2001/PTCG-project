@@ -9,6 +9,7 @@ import Login from '../components/shop/src/Login/index.vue';
 import Home from '../components/shop/src/Home/index.vue';
 import Category from '../components/shop/src/Category/index.vue';
 import Layout from '../components/shop/src/Layout/index.vue';
+import SubCategory from '../components/shop/src/SubCategory/index.vue';
 
 
 import App from '@/App.vue';
@@ -47,8 +48,12 @@ const routes = [
                         component:Home
                     },
                     {
-                        path:'category',
-                        component:Category
+                        path:'category/:id',
+                        component:Category,
+                    },
+                    {
+                        path:'category/sub/:id',
+                        component:SubCategory,
                     }
                 ]
             },
@@ -62,7 +67,12 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(){
+    return{
+        top:0
+    }
+  }
 });
 
 export default router;

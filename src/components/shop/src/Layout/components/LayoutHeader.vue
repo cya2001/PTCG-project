@@ -13,11 +13,11 @@ const categoryStore = useCategoryStore();
       </h1>
       <ul class="app-header-nav">
         <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+          <RouterLink to="/shop">首页</RouterLink>
         </li>
         
         <li v-for="item in categoryStore.categoryList" :key="item.id"> 
-            <RouterLink to="/">{{ item.name}}</RouterLink>
+            <RouterLink active-class="active" :to="`/shop/category/${item.id}`">{{ item.name}}</RouterLink>
         </li>
 
       </ul>
@@ -34,6 +34,7 @@ const categoryStore = useCategoryStore();
 
 <style scoped lang='scss'>
   @import '@/styles/common.scss'; 
+
 
 .app-header {
   background: #fff;

@@ -108,7 +108,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 .el-container{
     background-color: aquamarine;
 }

@@ -10,7 +10,7 @@ import LayoutFixed from "./components/LayoutFixed.vue";
   <LayoutNav></LayoutNav>
   <LayoutHeader></LayoutHeader>
   <LayoutFixed></LayoutFixed>
-  <RouterView/>
+  <RouterView  />
   <LayoutFooter></LayoutFooter>
 </template>
 

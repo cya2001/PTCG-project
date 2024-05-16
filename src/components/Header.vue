@@ -14,7 +14,7 @@
 </script>
 
 
-<style >
+<style  scoped>
 .header-box{
   display: flex;
   position: relative;

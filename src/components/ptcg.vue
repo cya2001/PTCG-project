@@ -212,7 +212,7 @@
 </script>
 
 
-<style >
+<style  scoped>
   .form-box{
     display: flex;
     flex-direction: column;

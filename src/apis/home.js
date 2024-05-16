@@ -1,7 +1,7 @@
 import http from '@/utils/https'
 
-export function getBannerAPI () {
-    return http.get('home/banner')
+export function getBannerAPI (id='1') {
+    return http.get('home/banner',{params:{id}})
 }
 
 export function getHotAPI () {

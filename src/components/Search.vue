@@ -124,7 +124,7 @@
     }
 </script>
 
-<style>
+<style scoped>
   .pkmn-card {
     width: 215px;
     height: 300px;

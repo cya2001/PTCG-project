@@ -16,6 +16,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* 样式规则 */
 </style>

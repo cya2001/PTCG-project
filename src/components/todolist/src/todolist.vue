@@ -44,7 +44,7 @@ export default {
 }
 </script>
   
-<style>
+<style scoped>
 .todolist{
     width: 500px;
     margin: 0 auto;
