@@ -20,7 +20,8 @@
   
 <script>
   import Details from './Details.vue'
-  import ptcg from "../../static/PTCG-CHS-Datasets-main/ptcg_chs_infos.json"
+  import ptcg from "../../../../static/PTCG-CHS-Datasets-main/ptcg_chs_infos.json"
+
   
   export default{
 
@@ -54,7 +55,7 @@
 
     methods:{
       requireImage(imagePath){
-        return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
+        return new URL('/../../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
       },
       handleQuery(){
         this.images = []

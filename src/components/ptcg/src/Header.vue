@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <title>PTCG demo</title>
     <div class = "header-box">
-      <img alt="Pokemon" class = "header-logo" src="../assets/International_Pokémon_logo.svg"/>
+      <img alt="Pokemon" class = "header-logo" src="@/assets/International_Pokémon_logo.svg"/>
       <p class="header-intro">This is PTCG-ch search app!</p>
     </div>
   </header>

@@ -20,46 +20,51 @@
 </template>
 
 <script>
-    import Details from './Details.vue'
+import Details from './Details.vue'
+import {requireImage} from '@/apis/ptcg'
 
-    export default{
-        
-        data(){
-            return{
-                selectedCard:"",
-                randomCard:[],
-                randomImagePath: '',
+export default{
+    components:{
+        Details
+    },
+    setup(){
+        const selectedCard = ref('')
+        const randomCard = ref([])
+        const randomImagePath = ref('')
+
+        onMounted(()=>{
+            randomShow()
+        })
+
+        // const requireImage = (imagePath)=>{
+        //     return new URL('/../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
+        // }
+
+        const showCardInfo = (image)=>{
+            selectedCard.value = image
+        }
+        const randomShow = ()=>{
+            for(let i = 0;i<5;i++){
+                let random1 = Math.floor(Math.random() * 109)+1;
+                let imagePath = `random\\${random1}.png`;
+                randomImagePath.value = requireImage(imagePath)
+                randomCard.value.push(imagePath)
             }
-
-        },
-        created(){
-            this.randomShow()
-        },
-        methods:{
-            requireImage(imagePath){
-                return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
-            },
-            showCardInfo(image){
-                this.selectedCard = image
-            },
-            randomShow(){
-                for(let i = 0;i<5;i++){
-                    let random1 = Math.floor(Math.random() * 109)+1;
-                    let imagePath = `random\\${random1}.png`;
-                    this.randomImagePath = new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href
-                    this.randomCard.push(imagePath)
-                }
-                // console.log(this.randomCard)
-                // return new URL('../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
-            },
-            hideCardInfo(){
-                this.selectedCard = ""
-            },
-        },
-        components:{
-            Details
-        },
+        }
+        const hideCardInfo = () => {  
+            selectedCard.value = ''
+        }
+        return{
+            selectedCard,  
+            randomCard,  
+            randomImagePath,  
+            showCardInfo,  
+            hideCardInfo, 
+            requireImage, 
+        }
     }
+    
+}
 
 
 </script>

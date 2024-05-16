@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Navi from '../components/Navi.vue';
-import ptcg from '../components/ptcg.vue';
+// import ptcg from '../components/ptcg.vue';
+import ptcg from '../components/ptcg/App.vue';
 import canlendar from '../components/calendar.vue';
 import todolist from '../components/todolist/App.vue';
 import cardcart from '../components/cardcart/App.vue';
@@ -10,6 +11,7 @@ import Home from '../components/shop/src/Home/index.vue';
 import Category from '../components/shop/src/Category/index.vue';
 import Layout from '../components/shop/src/Layout/index.vue';
 import SubCategory from '../components/shop/src/SubCategory/index.vue';
+import Detail from '../components/shop/src/Detail/index.vue';
 
 
 import App from '@/App.vue';
@@ -54,7 +56,11 @@ const routes = [
                     {
                         path:'category/sub/:id',
                         component:SubCategory,
-                    }
+                    },
+                    {
+                        path:'detail/:id',
+                        component:Detail,
+                    },
                 ]
             },
             {

@@ -1,10 +1,19 @@
 <script setup>
-    import router from '@/router/router';
-    import Header from './Header.vue';
-    import Search from './Search.vue';
-    import Details from './Details.vue';
-    import RandomShow from './RandomShow.vue';
-    import { throttle } from 'lodash';
+import Header from './src/Header.vue';
+import Search from './src/Search.vue';
+import RandomShow from './src/RandomShow.vue';
+import { throttle } from 'lodash';
+import poke from "../../../static/PTCG-CHS-Datasets-main/pokemon.json";
+import {getptcgAPI} from '@/apis/ptcg';
+
+const ptcg = ref();
+const getptcg = async()=>{
+    const res = await getptcgAPI()
+    ptcg.value = res.result
+}
+onMounted(()=>getptcg())
+
+
 </script>
 
 <template>
@@ -78,23 +87,23 @@
     <div  v-if="showResult" class="navi-box">
         <div class="navi-button">
             <router-link to="/">
-                <img class="navi-img" src="../assets/navi.svg">
+                <img class="navi-img" src="@/assets/navi.svg">
             </router-link>
         </div>
         <div class="up-button" >
             <button class="up-button-img">
-                <img class="up-img" src="../assets/Pikachu.svg" @click="srcollToTop">
+                <img class="up-img" src="@/assets/Pikachu.svg" @click="srcollToTop">
             </button>
         </div>
     
     </div>
    
   </main>
+
 </template>
 
 
 <script>
-  import poke from "../../static/PTCG-CHS-Datasets-main/pokemon.json"
 
   export default{
     data(){
@@ -208,7 +217,7 @@
       Search
     },
     
-  };
+  }
 </script>
 
 
