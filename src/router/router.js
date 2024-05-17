@@ -12,6 +12,7 @@ import Category from '../components/shop/src/Category/index.vue';
 import Layout from '../components/shop/src/Layout/index.vue';
 import SubCategory from '../components/shop/src/SubCategory/index.vue';
 import Detail from '../components/shop/src/Detail/index.vue';
+import test from '../components/compbase/test/test.vue'
 
 
 import App from '@/App.vue';
@@ -36,6 +37,10 @@ const routes = [
     {
         path: '/cardcart',
         component:cardcart
+    },
+    {
+        path: '/test',
+        component:test
     },
     {
         path: '/shop',

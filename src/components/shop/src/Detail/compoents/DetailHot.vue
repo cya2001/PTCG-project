@@ -1,5 +1,6 @@
 <script setup>
 import { getHotGoodsAPI } from '@/apis/detail'
+import { computed } from 'vue';
 import { useRoute } from 'vue-router'
 
 // 设计props参数 适配不同的title和数据
@@ -18,6 +19,7 @@ const TYPEMAP = {
 const title = computed(() => {
   return TYPEMAP[props.hotType]
 })
+
 
 const goodList = ref([])
 const route = useRoute()
