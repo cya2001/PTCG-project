@@ -9,7 +9,7 @@ const getGoods = async () => {
   goodsProduct.value = result
 }
 onMounted( ()=> getGoods() )
-console.log({goodsProduct})
+// console.log({goodsProduct})
 </script>
 
 

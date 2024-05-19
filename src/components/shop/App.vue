@@ -3,7 +3,7 @@
 </template>
 
 <script>
-
+// import '@/styles/common.scss'; 
 
 </script>
 
