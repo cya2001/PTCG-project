@@ -13,6 +13,8 @@ import Layout from '../components/shop/src/Layout/index.vue';
 import SubCategory from '../components/shop/src/SubCategory/index.vue';
 import Detail from '../components/shop/src/Detail/index.vue';
 import test from '../components/compbase/test/test.vue'
+import CartList from '../components/shop/src/CartList/index.vue';
+
 
 
 import App from '@/App.vue';
@@ -65,6 +67,10 @@ const routes = [
                     {
                         path:'detail/:id',
                         component:Detail,
+                    },
+                    {
+                        path:'cartlist',
+                        component:CartList,
                     },
                 ]
             },
