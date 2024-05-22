@@ -3,17 +3,103 @@ import Header from './src/Header.vue';
 import Search from './src/Search.vue';
 import RandomShow from './src/RandomShow.vue';
 import { throttle } from 'lodash';
-import poke from "../../../static/PTCG-CHS-Datasets-main/pokemon.json";
+import {getpokeAPI} from '@/apis/ptcg'
+// import poke from "../../../static/PTCG-CHS-Datasets-main/pokemon.json";
 import {getptcgAPI} from '@/apis/ptcg';
+import { defineProps, ref, onMounted,defineEmits, computed,watch } from 'vue';  
 
-const ptcg = ref();
-const getptcg = async()=>{
-    const res = await getptcgAPI()
-    ptcg.value = res.result
+const poke = getpokeAPI()
+onMounted(()=>{
+  window.addEventListener('click',handleClickOutside)
+  // console.log(poke)
+})
+
+
+const checkboxLabels = {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
+        'S':'7','SR':'8','SSR':'9','CHR':'11','A':'12','CSR':'13','HR':'98','UR':'99'}
+const query = ref('')
+const showResult = ref(false)
+const searchOption = ref('card')
+const checkValue = ref([])
+const showNewInput = ref(false)
+const suggestions = ref([])
+const showSuggestion = ref(false)
+const suggestionCache = ref([])
+const submit = ref(false)
+
+const submitForm=()=>{
+  submit.value = true
+  console.log('发送查询:',query.value)
+  showResult.value = true
+  suggestionCache.value.push(query.value)
 }
-onMounted(()=>getptcg())
+const handleQueryReceived = (res)=>{
+  console.log('App接受到查询:',res)
+  submit.value = false
+}
+onMounted(()=>{window.addEventListener('scroll',throttle(handleScroll,200))})
+const handleScroll = ()=>{
+    const scrollPostion = document.documentElement.scrollTop
+    if (scrollPostion>300){
+      showNewInput.value = true
+    }else{
+      showNewInput.value = false
+    }
+}
+const srcollToTop = ()=>{
+  window.scrollTo({top:0,behavior:'smooth'})
+}
+const handleInput=()=>{
+  clearTimeout()
+  setTimeout(()=>{
+    if(query.value!==''){
+      suggestions.value = generateSuggestions(query.value)
+      showSuggestion.value = true
+    }else{
+      showSuggestion.value = false
+    }
+  },300)
+}
+const generateSuggestions=(query)=>{
+  console.log('suggestionCache:',suggestionCache.value)
+  const suggestions=[]
+  for(let item of poke){
+    if(item[2].includes(query)){
+      suggestions.push(item[2])
+    }
+  }
+  return suggestions.slice(0,10)
+}
+
+const selectSuggestion = (suggestion)=>{
+  if(suggestion){
+    query.value = suggestion
+    showSuggestion.value = false
+  }else{
+    showSuggestion.value = false
+  }
+}
+
+const handleSuggest = ()=>{
+  if(suggestionCache.value.length){
+    suggestions.value = suggestionCache.value
+    showSuggestion.value = true
+  }else{
+    showSuggestion.value = false
+  }
+}
 
 
+// const des = beforeDestroy(()=>window.removeEventListener('click', this.handleClickOutside))
+const handleClickOutside = (e)=>{
+  if(showSuggestion.value){
+    const targetElement = e.target
+    const suggestionElement = document.getElementsByClassName('search-box')[0]
+    if(!suggestionElement.contains(targetElement)){
+      showSuggestion.value = false
+    }
+  }
+}
 </script>
 
 <template>
@@ -105,119 +191,119 @@ onMounted(()=>getptcg())
 
 <script>
 
-  export default{
-    data(){
-      return{
-        checkboxLabels : {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
-        'S':'7','SR':'8','SSR':'9','CHR':'11','A':'12','CSR':'13','HR':'98','UR':'99'},
-        query:'',
-        showResult: false,
-        searchOption:'card',
-        checkValue:[],
-        showNewInput:false,
-        suggestions:[],
-        showSuggestion:false,
-        suggestionCache:[],
-        submit: false,
-      };
-    },
-    mounted(){
-      window.addEventListener('scroll',throttle(this.handleScroll, 200))
-    },
-    created() {
-      window.addEventListener('click', this.handleClickOutside);
-    },
-    beforeDestroy() {
-      window.removeEventListener('click', this.handleClickOutside);
-    },
+//   export default{
+//     data(){
+//       return{
+//         checkboxLabels : {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
+//         'S':'7','SR':'8','SSR':'9','CHR':'11','A':'12','CSR':'13','HR':'98','UR':'99'},
+//         query:'',
+//         showResult: false,
+//         searchOption:'card',
+//         checkValue:[],
+//         showNewInput:false,
+//         suggestions:[],
+//         showSuggestion:false,
+//         suggestionCache:[],
+//         submit: false,
+//       };
+//     },
+//     mounted(){
+//       window.addEventListener('scroll',throttle(this.handleScroll, 200))
+//     },
+//     created() {
+//       window.addEventListener('click', this.handleClickOutside);
+//     },
+//     beforeDestroy() {
+//       window.removeEventListener('click', this.handleClickOutside);
+//     },
     
-    methods:{
-      submitForm(){
-        this.submit = true
-        this.sendQuery(this.query);
-      },
-      sendQuery(query){
-        console.log('发送查询:',query)
-        this.showResult = true
-        this.suggestionCache.push(this.query)
-      },
-      handleQueryReceived(result){
-        console.log('App接收到查询:',result)
-        this.submit = false
-      },
-      handleScroll(){
-        const scrollPostion = document.documentElement.scrollTop
-        // console.log(scrollPostion)
-        if (scrollPostion>300){
-          this.showNewInput = true
-        }else{
-          this.showNewInput = false
-        }
-      },
-      srcollToTop(){
-        window.scrollTo({top:0,behavior:'smooth'})
-      },
-      handleInput(){
+//     methods:{
+//       submitForm(){
+//         this.submit = true
+//         this.sendQuery(this.query);
+//       },
+//       sendQuery(query){
+//         console.log('发送查询:',query)
+//         this.showResult = true
+//         this.suggestionCache.push(this.query)
+//       },
+//       handleQueryReceived(result){
+//         console.log('App接收到查询:',result)
+//         this.submit = false
+//       },
+//       handleScroll(){
+//         const scrollPostion = document.documentElement.scrollTop
+//         // console.log(scrollPostion)
+//         if (scrollPostion>300){
+//           this.showNewInput = true
+//         }else{
+//           this.showNewInput = false
+//         }
+//       },
+//       srcollToTop(){
+//         window.scrollTo({top:0,behavior:'smooth'})
+//       },
+//       handleInput(){
 
-        clearTimeout()
-        //模拟异步获取联想列表
-        setTimeout(() => {
-          if(this.query!==""){
-            this.suggestions = this.generateSuggestions(this.query)
-            this.showSuggestion = true
-          }
-          else{
-            this.showSuggestion = false
-          }
+//         clearTimeout()
+//         //模拟异步获取联想列表
+//         setTimeout(() => {
+//           if(this.query!==""){
+//             this.suggestions = this.generateSuggestions(this.query)
+//             this.showSuggestion = true
+//           }
+//           else{
+//             this.showSuggestion = false
+//           }
 
-        }, 300);
-      },
-      generateSuggestions(query){
-        console.log(this.suggestionCache)
-        let suggestions = []
-        const data = poke
-        for(let item of data){
-          let item_name = item[2]
-          if (item_name.includes(query)){
-            suggestions.push(item_name)
-          }
-        }
+//         }, 300);
+//       },
+//       generateSuggestions(query){
+//         console.log(this.suggestionCache)
+//         let suggestions = []
+//         const data = poke
+//         for(let item of data){
+//           let item_name = item[2]
+//           if (item_name.includes(query)){
+//             suggestions.push(item_name)
+//           }
+//         }
 
-        return suggestions.slice(0,10)
-      },
-      selectSuggestion(suggestion){
-        if (suggestion){
-          this.query = suggestion
-          this.showSuggestion = false
-        }else{
-          this.showSuggestion = false
-        }
+//         return suggestions.slice(0,10)
+//       },
+//       selectSuggestion(suggestion){
+//         if (suggestion){
+//           this.query = suggestion
+//           this.showSuggestion = false
+//         }else{
+//           this.showSuggestion = false
+//         }
  
-      },
-      handleClickOutside(event){
-        if(this.showSuggestion){
-          const targetElement = event.target
-          const suggestionElement = document.getElementsByClassName('search-box')[0]
-          if(!suggestionElement.contains(targetElement)){
-            this.showSuggestion = false
-          }
-        }
-      },
-      handleSuggest(){
-        // console.log(this.suggestionCache)
-        if (this.suggestionCache.length) {
-          this.suggestions = this.suggestionCache;
-          this.showSuggestion = true;
-          } else {
-          this.showSuggestion = false;
-        }
-        },
-    },
-    components:{
-      Search
-    },
+//       },
+//       handleClickOutside(event){
+//         if(this.showSuggestion){
+//           const targetElement = event.target
+//           const suggestionElement = document.getElementsByClassName('search-box')[0]
+//           if(!suggestionElement.contains(targetElement)){
+//             this.showSuggestion = false
+//           }
+//         }
+//       },
+//       handleSuggest(){
+//         // console.log(this.suggestionCache)
+//         if (this.suggestionCache.length) {
+//           this.suggestions = this.suggestionCache;
+//           this.showSuggestion = true;
+//           } else {
+//           this.showSuggestion = false;
+//         }
+//         },
+//     },
+//     components:{
+//       Search
+//     },
     
-  }
+//   }
 </script>
 
 

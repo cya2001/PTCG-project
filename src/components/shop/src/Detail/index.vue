@@ -11,7 +11,7 @@ const route = useRoute()
 const getGoods = async () => {
   const res = await getDetail(route.params.id)
   goods.value = res.result
-
+  // console.log(goods.value)
 }
 onMounted(() => getGoods())
 
