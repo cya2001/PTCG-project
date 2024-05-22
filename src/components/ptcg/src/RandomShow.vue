@@ -16,7 +16,7 @@
             <img class="showbox-img" :src="requireImage(randomCard[4])" alt="rimage" @click = "showCardInfo(randomCard[4])">
         </div>
     </div>
-    <Details v-show="selectedCard" :selectedCard="selectedCard"  @close ='hideCardInfo'/>
+    <!-- <Details v-show="selectedCard" :selectedCard="selectedCard"  @close ='hideCardInfo'/> -->
 </template>
 
 <script>
@@ -28,17 +28,13 @@ export default{
         Details
     },
     setup(){
-        const selectedCard = ref('')
+        const selectedCard = ref({})
         const randomCard = ref([])
         const randomImagePath = ref('')
 
         onMounted(()=>{
             randomShow()
         })
-
-        // const requireImage = (imagePath)=>{
-        //     return new URL('/../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
-        // }
 
         const showCardInfo = (image)=>{
             selectedCard.value = image
@@ -52,7 +48,7 @@ export default{
             }
         }
         const hideCardInfo = () => {  
-            selectedCard.value = ''
+            selectedCard.value = {}
         }
         return{
             selectedCard,  

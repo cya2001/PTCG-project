@@ -2,6 +2,7 @@
 import Header from './src/Header.vue';
 import Search from './src/Search.vue';
 import RandomShow from './src/RandomShow.vue';
+import FavCard from './src/FavCard.vue';
 import { throttle } from 'lodash';
 import {getpokeAPI} from '@/apis/ptcg'
 // import poke from "../../../static/PTCG-CHS-Datasets-main/pokemon.json";
@@ -104,7 +105,7 @@ const handleClickOutside = (e)=>{
 
 <template>
   <Header/>
-
+  <FavCard/>
   <main>
     <div class="main-box">
 

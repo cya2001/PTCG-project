@@ -3,7 +3,10 @@
         <div class="cardinfo-overlay" @click="handleCardInfoClick">
             <div class="cardinfo-content">
                 <div class="pkmn-card-large">
-                    <img :src="requireImage(selectedCard)">
+                    <img :src="requireImage(selectedCard.image)">
+                    <button @click="cardStore.addCard(selectedCard)">添加到收藏</button>
+                    <button @click="cardStore.clearCard">清楚</button>
+                    
                 </div>
                 <div class="cardinfo-other">
                     <select class = "collection-select" v-model="selectedCollection" >
@@ -34,13 +37,16 @@ import {requireImage} from '@/apis/ptcg'
 import {requireCollectionImage} from '@/apis/ptcg'
 import {getptcgAPI} from '@/apis/ptcg'
 import {getpokeAPI} from '@/apis/ptcg'
+import { usecardStore } from "@/components/ptcg/stores/cardStore";
+
+const cardStore = usecardStore()
 
 const ptcg = getptcgAPI()
 
 
 const props = defineProps({
     selectedCard:{
-        type:String,
+        type:Object,
         required:true,
     }
 })
@@ -65,7 +71,7 @@ onMounted(() => {
     };  
   
     const findCollections = () => {  
-      const selectedCardID = getIdByImagePath(props.selectedCard);  
+      const selectedCardID = getIdByImagePath(props.selectedCard.image);  
       for (const collection of ptcg.collections) {  
         for (const card of collection.cards) {  
           if (card.id === selectedCardID) {  

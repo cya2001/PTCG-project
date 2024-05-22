@@ -1,9 +1,9 @@
 <template>
   <div class = "card-container">
-    <div  v-for="card in paginatedImages" key="card">
+    <div  v-for="card in paginatedCards" key="card">
       <button class="card-button">
         <!-- <img class = "pkmn-card" v-img-lazy="requireImage(card)"  alt="Image" @click="showCardInfo(card)" /> -->
-        <img class = "pkmn-card" :src="requireImage(card)"  alt="Image" @click="showCardInfo(card)" />
+        <img class = "pkmn-card" :src="requireImage(card.image)"  alt="Image" @click="showCardInfo(card)" />
 
       </button>
     </div>
@@ -53,7 +53,8 @@ const props = defineProps({
 })
 const emit = defineEmits(['query-received'])
 const images = ref([])
-const selectedCard = ref('')
+const cards = ref([])
+const selectedCard = ref()
 const currentPage=ref(1)
 const pageSize = ref(20)
 const checkboxLabels = {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
@@ -64,17 +65,18 @@ onMounted(()=>{
   console.log(ptcg)
 })
 
-const paginatedImages = computed(()=>{
+const paginatedCards = computed(()=>{
   const startIndex = (currentPage.value - 1) * pageSize.value
   const endIndex = startIndex + pageSize.value
-  return images.value.slice(startIndex,endIndex)
+  return cards.value.slice(startIndex,endIndex)
 })
 
 const totalPages = computed(()=>{
-  return Math.ceil(images.value.length/pageSize.value)
+  return Math.ceil(cards.value.length/pageSize.value)
 })
 const handleQuery = ()=>{
-  images.value = searchQuery(props.searchOption,props.query,props.checkValue)
+  // images.value = searchQuery(props.searchOption,props.query,props.checkValue)
+  cards.value = searchQuery(props.searchOption,props.query,props.checkValue)
   console.log('接受到查询',props.query,props.checkValue)
   emit('query-received',props.query+props.checkValue)
 }
@@ -104,7 +106,7 @@ const searchQuery = (searchOption,query,checkValue)=>{
       })
       matches.forEach(card=>{
         if(!existId.has(card.id)){
-          res.push(card.image)
+          res.push(card)
         }
         existId.add(card.id)
       })
