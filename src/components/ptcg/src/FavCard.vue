@@ -91,7 +91,6 @@ h1{
   left: 0;
   right:0;
   bottom: 0;
-  // background-color:black;
   background-image: url('@/assets/pokemon/favbag.png');
   background-size: cover;
   display: flex;
