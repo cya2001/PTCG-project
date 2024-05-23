@@ -27,3 +27,6 @@ export function requireCollectionImage(collectionName){
         }
     return new URL('/../static/PTCG-CHS-Datasets-main/'+collectionPath,import.meta.url).href;
 }
+export function requireAttribute(i){
+    return new URL('/../src/assets/pokemon/'+i+'.png',import.meta.url).href;
+}

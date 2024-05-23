@@ -2,14 +2,119 @@
     <div class="cardinfo-hideback">
         <div class="cardinfo-overlay" @click="handleCardInfoClick">
             <div class="cardinfo-content">
-                <div class="pkmn-card-large">
-                    <img :src="requireImage(selectedCard.image)">
+                <div>
+                    <img :src="requireImage(selectedCard.image)" class="pkmn-card-large">
                     <button @click="cardStore.addCard(selectedCard)">添加到收藏</button>
-                    <button @click="cardStore.clearCard">清楚</button>
-                    
+                    <el-button type="warning" :icon="Star" circle />
                 </div>
+                
                 <div class="cardinfo-other">
-                    <select class = "collection-select" v-model="selectedCollection" >
+                    <div class="section">
+                        <div class="cardinfo-head">
+                          <div class="level-left">
+                            <div class="level-item">
+                              <span>
+                              <span class="bold">{{ selectedCard.name }}</span>
+                              {{ selectedCard.details.pokemonCategory }}                            
+                              </span>
+                              <span class="italic">
+                                  {{ selectedCard.details.cardTypeText }}-{{ selectedCard.details.evolveText }}
+                              </span>                          
+                            </div>
+                          </div>
+                          <div class="level-right">
+                            <div class="level-item-right">
+                            HP {{ selectedCard.details.hp }}
+                          <img :src="requireAttribute(selectedCard.details.attribute)" class="attribute">
+                            </div>
+                          </div>
+                      </div>
+                      <hr>  
+                    </div>
+                    
+                    <div class="section" v-if="selectedCard.details.cardFeatureItemList">
+                      <div class="cardinfo-ability" >
+                        <p class="heading">ABILITY</p>
+                        <img src="@/assets/pokemon/a.png" class="ability">
+                        <span class="bold">{{ selectedCard.details.cardFeatureItemList[0].featureName }}</span>
+                        <p class="cardinfo-sdesc">{{ selectedCard.details.cardFeatureItemList[0].featureDesc}}</p>
+                      </div>
+                      <hr>
+                    </div>
+
+                    <div class="section">
+                      <div class="cardinfo-attack">
+                        <p class="heading">ATTACKS</p>
+                        <div v-for="item in selectedCard.details.abilityItemList" class="cardinfo-attack-container ">
+                          <div class="cardinfo-attack-cost">
+                          <div v-for="cost in item.abilityCost.split(',')"  >
+                            <img :src="requireAttribute(cost)" class="attribute">
+                          </div>
+                          <p class="bold">{{ item.abilityName }}</p>                          
+                          </div>
+
+                          <div class="">
+                          <p v-if="item.abilityDamage!='none'">{{ item.abilityDamage }}</p>
+                          <p v-else>0</p>
+                        </div>
+                        </div>
+                      </div>
+                      <hr>
+                    </div>
+                    <div class="section">
+                      <div class="cardinfo-res">
+                        <div class="cardinfo-res-box">
+                          <p class="heading">Weakness</p>
+                          <div v-if="selectedCard.details.weaknessType">
+                            <img :src="requireAttribute(selectedCard.details.weaknessType)" class="attribute">
+                            {{ selectedCard.details.weaknessFormula }}                            
+                          </div>
+                          <div v-else>
+                            N/A
+                          </div>
+                        </div>
+
+                        <div class="cardinfo-res-box">
+                          <p class="heading">resistance</p>
+                          <div v-if="selectedCard.details.resistanceType">
+                            <img :src="requireAttribute(selectedCard.details.resistanceType)" class="attribute" alt="N/A">
+                            {{ selectedCard.details.resistanceFormula }}
+                          </div>
+                          <div v-else>
+                            N/A
+                          </div>
+                        </div>                  
+                        <div class="cardinfo-res-box">
+                          <p class="heading">RECEAT COST</p>
+                          <img :src="requireAttribute(11)" class="attribute" v-for="i in selectedCard.details.retreatCost">
+                        </div>
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">Artist</p>
+                          {{ selectedCard.details.illustratorName[0] }}
+                        </div>
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">rarity</p>
+                          {{ selectedCard.details.rarityText }}
+                        </div>
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">number</p>
+                          {{ selectedCard.details.collectionNumber }}
+                        </div>
+
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">SET</p>
+                          <!-- <p v-for="i in selectedCard.details.commodityList">
+                            {{ i.commodityName }}
+                          </p> -->
+                          {{  selectedCard.details.commodityList[0].commodityName }}
+                        </div>
+                      
+                      <hr>                        
+                      </div>
+
+                    </div>
+
+                    <!-- <select class = "collection-select" v-model="selectedCollection" >
                         <option value="">选择</option>
                         <option v-for="(collection,index) in collections" 
                         :key="collection.name" 
@@ -19,12 +124,9 @@
                         </option>
                     </select>
                     <div  v-for="collection in collections" :key="collection.name" class= "cardinfo-collectionbox"  v-show="collection.name === selectedCollection">
-                        <!-- <p>{{ collection.name }}</p> -->
-                      
-                        <img class="collection-cover" :src=requireCollectionImage(collection.name)>
-                        
-                    </div>
-                    <!-- <p>Other info</p> -->
+                        <img class="collection-cover" :src=requireCollectionImage(collection.name)>                
+                    </div> -->
+
                 </div>
             </div>
         </div>
@@ -32,9 +134,11 @@
 </template>
 
 <script setup>
+import {Star} from '@element-plus/icons-vue'
 import { defineProps, ref, onMounted } from 'vue';  
 import {requireImage} from '@/apis/ptcg'
 import {requireCollectionImage} from '@/apis/ptcg'
+import {requireAttribute} from '@/apis/ptcg'
 import {getptcgAPI} from '@/apis/ptcg'
 import {getpokeAPI} from '@/apis/ptcg'
 import { usecardStore } from "@/components/ptcg/stores/cardStore";
@@ -98,85 +202,7 @@ onMounted(() => {
     const hideCardInfo = () => {  
       closeCardInfo('close');  
     };  
-  
-// export default{
-
-//         props:{
-//             selectedCard:{
-//                 type:String,
-//                 required:true
-//             },
-//         },
-
-//         data(){
-//             return{
-//                 collections:[],
-//                 selectedCollection:'',
-//             }
-//         },
-//         mounted(){
-//             this.findCollections()
-//             this.updateSelectedCollection();
-//         },
-        
-//         methods:{
-//             requireImage(imagePath){
-//                 return new URL('/../../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
-//             },
-//             handleCardInfoClick(event){
-//                 const targetElement = event.target
-//                 const cardInfoElement = document.querySelector('.cardinfo-content');
-//                 if (!cardInfoElement.contains(targetElement)) {
-//                     // 点击事件在特定区域内，执行相关操作
-//                     this.hideCardInfo();
-//                 }
-//             },
-//             hideCardInfo(){
-//                 this.$emit('close')
-//             },
-//             findCollections(){
-//                 const selectedCardID = this.getIdByImagePath(this.selectedCard)
-//                 for (const collection of ptcg.collections){
-//                     for (const card of collection.cards){
-//                         if (card.id === selectedCardID){
-//                             this.collections.push(collection)
-//                         }
-//                     }
-//                 }
-//             },
-//             getIdByImagePath(imagePath){
-//                 let selectedCardID = null
-//                 for (const collection of ptcg.collections){
-//                     for (const card of collection.cards){
-//                         if (card.image === imagePath){
-//                             selectedCardID = card.id
-//                             break
-//                         }
-//                     }
-//                 }
-//                 return selectedCardID
-//             },
-//             requireCollectionImage(collectionName){
-//                 let collectionPath = null
-//                 // console.log(collectionName)
-//                 for (const collection of ptcg.collections){
-//                     if(collectionName===collection.name){
-//                         // console.log(collection.name)
-//                         collectionPath = collection.image
-//                         break
-//                     }
-//                 }
-//                 return new URL('/../../static/PTCG-CHS-Datasets-main/'+collectionPath,import.meta.url).href;
-
-//             },
-//             handleCollection(event){
-//                 this.selectedCollection = event.target.value
-//             },
-//             updateSelectedCollection(){
-//                 this.selectedCollection = this.collections.length > 0 ? this.collections[0].name : ''
-//             }
-//         },
-//    }
+ 
 </script>
 
 <style scoped>
@@ -203,20 +229,97 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
 }
+hr {
+    background-color: #d3d3d3;
+    border: none;
+    display: block;
+    height: 5px;
+    margin: 5px 0;
+}
+.nodisplay{
+  display: none;
+}
 .cardinfo-content{
     width: 70%;
-    height: 500px;
+    max-width: 100%;
+    height: auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 4%;
     display: flex;
+    .cardinfo-sdesc{
+      font-size: 13px;
+    }
+    .attribute{
+      display: inline-block;
+      vertical-align: top;
+      min-width: 25px;
+      max-width: 25px;
+      width: 25px;
+      height: auto;
+    }
+    .bold{
+      font-weight: bold;
+    }
+    .italic{
+      font-style: italic;
+    }
 }
 .cardinfo-other{
     margin: 15px;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
     justify-content: space-between;
+    .section{
+      display: flex;
+      flex-direction: column;
+    }
+    .cardinfo-head{
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      .level-item {
+          display: flex;
+          flex-direction: column;
+          justify-content: start;
+      }
+    }
+    .heading{
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      text-transform: uppercase
+    }
+    .cardinfo-ability{
+      .ability{
+            display: inline-block;
+            vertical-align: top;
+            min-width: 80px;
+            width: 100px;
+            height: auto;
+          }
+    }
+    .cardinfo-attack-container{
+      display: flex;
+      justify-content: space-between;
+      .cardinfo-attack-cost{
+        display: flex;
+      }      
+    }
+    .cardinfo-res{
+      display: flex;
+      flex-wrap: wrap;
+      .cardinfo-res-box{
+        /* flex:1 0 auto; */
+        flex: none;
+        width: 33.3333%;
+        padding: 10px;
+        
+      }
+    }
 
 }
 .cardinfo-collectionbox{
@@ -230,9 +333,11 @@ onMounted(() => {
 }
 
 .pkmn-card-large {
-    width: 300px;
-    height: 100%;
+    min-width: fit-content;
+    height: 80%;
     margin: 15px;
+    border-radius: 20px;
+    box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.45);
 }
 
 .collection-cover {

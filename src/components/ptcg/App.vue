@@ -329,7 +329,7 @@ const handleClickOutside = (e)=>{
     border-end-start-radius: 10%;
     border-end-end-radius: 10%;
     padding: 10px;
-    z-index: 9999;
+    z-index: 9;
 
   }
 
