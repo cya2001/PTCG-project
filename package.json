@@ -1,0 +1,37 @@
+{
+  "name": "ptcg-project",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.9.0",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "core-js": "^3.37.0",
+    "element-plus": "^2.7.1",
+    "jquery": "^3.7.1",
+    "less": "^4.2.0",
+    "lodash": "^4.17.21",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "pokemontcgsdk": "^2.0.0",
+    "popper.js": "^1.16.1",
+    "unplugin-auto-import": "^0.17.6",
+    "unplugin-vue-components": "^0.27.0",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "babel-plugin-component": "^1.1.1",
+    "file-loader": "^6.2.0",
+    "sass": "^1.77.1",
+    "unplugin-element-plus": "^0.8.0",
+    "vite": "^5.1.5"
+  }
+}
