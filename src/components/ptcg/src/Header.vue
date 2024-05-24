@@ -1,3 +1,18 @@
+<script setup>
+import { defineProps, ref, onMounted,defineEmits, computed,watch } from 'vue';  
+
+const bannerFlag = ref(true)
+const emit = defineEmits(['bannerFlag'])
+
+const handleBanner = ()=>{
+  bannerFlag.modelValue = !bannerFlag.modelValue
+  emit('bannerFlag',bannerFlag.value)
+}
+
+
+
+</script>
+
 <template>
   <header class="nav-bar">
     <div class="nav-container left">
@@ -5,6 +20,11 @@
       <p class="title">Pokémon TCG 简中</p>
     </div>
     <div class="nav-container right">
+      <el-switch
+        v-model="bannerFlag"
+        class="bannerBtn"
+        @change="handleBanner"
+      />
       <div class="right-item">
         <p>收藏</p>
       </div>
@@ -17,11 +37,6 @@
     </div>
   </header>
 </template>
-
-
-<script>
-</script>
-
 
 <style lang="less" scoped>
 .nav-bar{

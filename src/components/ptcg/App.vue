@@ -1,7 +1,7 @@
 <script setup>
 import Header from './src/Header.vue';
 import Footer from './src/Footer.vue';
-
+import BannerShow from './src/BannerShow.vue';
 import Search from './src/Search.vue';
 import RandomShow from './src/RandomShow.vue';
 import FavCard from './src/FavCard.vue';
@@ -10,6 +10,7 @@ import {getpokeAPI} from '@/apis/ptcg'
 // import poke from "../../../static/PTCG-CHS-Datasets-main/pokemon.json";
 import {getptcgAPI} from '@/apis/ptcg';
 import { defineProps, ref, onMounted,defineEmits, computed,watch } from 'vue';  
+import { type } from 'jquery';
 
 const poke = getpokeAPI()
 onMounted(()=>{
@@ -29,6 +30,18 @@ const suggestions = ref([])
 const showSuggestion = ref(false)
 const suggestionCache = ref([])
 const submit = ref(false)
+const banner = ref(true)
+
+const props = defineProps({
+  bannerFlag:{
+    type:Boolean,
+  }
+})
+
+const handleBanner=(e)=>{
+  banner.value = e
+  // console.log('banner:',banner.value)
+}
 
 const submitForm=()=>{
   submit.value = true
@@ -106,7 +119,7 @@ const handleClickOutside = (e)=>{
 </script>
 
 <template>
-  <Header/>
+  <Header @bannerFlag="handleBanner"/>
   <div class="greeting-box">
       <h1 class="titel">Pokémon TCG Search!</h1>
     <h2 class="subtitle">The Ultimate Pokémon Card Database ch.</h2>
@@ -174,7 +187,8 @@ const handleClickOutside = (e)=>{
       
       <Search v-if="showResult" :submit = "submit" :query="query" :searchOption="searchOption" :checkValue="checkValue" @query-received="handleQueryReceived" />
 
-      <RandomShow  v-if="!showResult"/> 
+      <RandomShow  v-if="!showResult && !banner"/> 
+      <BannerShow v-if="!showResult && banner"/>
       <!-- <Details v-if="selectedCard" :selectedCard="selectedCard" :requireImage="requireImage" @close ='hideCardInfo'/> -->
       
     </div>
