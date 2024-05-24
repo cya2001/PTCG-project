@@ -1,5 +1,7 @@
 <script setup>
 import Header from './src/Header.vue';
+import Footer from './src/Footer.vue';
+
 import Search from './src/Search.vue';
 import RandomShow from './src/RandomShow.vue';
 import FavCard from './src/FavCard.vue';
@@ -41,7 +43,7 @@ const handleQueryReceived = (res)=>{
 onMounted(()=>{window.addEventListener('scroll',throttle(handleScroll,200))})
 const handleScroll = ()=>{
     const scrollPostion = document.documentElement.scrollTop
-    if (scrollPostion>300){
+    if (scrollPostion>500){
       showNewInput.value = true
     }else{
       showNewInput.value = false
@@ -105,6 +107,11 @@ const handleClickOutside = (e)=>{
 
 <template>
   <Header/>
+  <div class="greeting-box">
+      <h1 class="titel">Pokémon TCG Search!</h1>
+    <h2 class="subtitle">The Ultimate Pokémon Card Database ch.</h2>
+  </div>
+
   <FavCard/>
   <main>
     <div class="main-box">
@@ -186,129 +193,27 @@ const handleClickOutside = (e)=>{
     </div>
    
   </main>
-
+  <Footer/>
 </template>
 
 
-<script>
-
-//   export default{
-//     data(){
-//       return{
-//         checkboxLabels : {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
-//         'S':'7','SR':'8','SSR':'9','CHR':'11','A':'12','CSR':'13','HR':'98','UR':'99'},
-//         query:'',
-//         showResult: false,
-//         searchOption:'card',
-//         checkValue:[],
-//         showNewInput:false,
-//         suggestions:[],
-//         showSuggestion:false,
-//         suggestionCache:[],
-//         submit: false,
-//       };
-//     },
-//     mounted(){
-//       window.addEventListener('scroll',throttle(this.handleScroll, 200))
-//     },
-//     created() {
-//       window.addEventListener('click', this.handleClickOutside);
-//     },
-//     beforeDestroy() {
-//       window.removeEventListener('click', this.handleClickOutside);
-//     },
-    
-//     methods:{
-//       submitForm(){
-//         this.submit = true
-//         this.sendQuery(this.query);
-//       },
-//       sendQuery(query){
-//         console.log('发送查询:',query)
-//         this.showResult = true
-//         this.suggestionCache.push(this.query)
-//       },
-//       handleQueryReceived(result){
-//         console.log('App接收到查询:',result)
-//         this.submit = false
-//       },
-//       handleScroll(){
-//         const scrollPostion = document.documentElement.scrollTop
-//         // console.log(scrollPostion)
-//         if (scrollPostion>300){
-//           this.showNewInput = true
-//         }else{
-//           this.showNewInput = false
-//         }
-//       },
-//       srcollToTop(){
-//         window.scrollTo({top:0,behavior:'smooth'})
-//       },
-//       handleInput(){
-
-//         clearTimeout()
-//         //模拟异步获取联想列表
-//         setTimeout(() => {
-//           if(this.query!==""){
-//             this.suggestions = this.generateSuggestions(this.query)
-//             this.showSuggestion = true
-//           }
-//           else{
-//             this.showSuggestion = false
-//           }
-
-//         }, 300);
-//       },
-//       generateSuggestions(query){
-//         console.log(this.suggestionCache)
-//         let suggestions = []
-//         const data = poke
-//         for(let item of data){
-//           let item_name = item[2]
-//           if (item_name.includes(query)){
-//             suggestions.push(item_name)
-//           }
-//         }
-
-//         return suggestions.slice(0,10)
-//       },
-//       selectSuggestion(suggestion){
-//         if (suggestion){
-//           this.query = suggestion
-//           this.showSuggestion = false
-//         }else{
-//           this.showSuggestion = false
-//         }
- 
-//       },
-//       handleClickOutside(event){
-//         if(this.showSuggestion){
-//           const targetElement = event.target
-//           const suggestionElement = document.getElementsByClassName('search-box')[0]
-//           if(!suggestionElement.contains(targetElement)){
-//             this.showSuggestion = false
-//           }
-//         }
-//       },
-//       handleSuggest(){
-//         // console.log(this.suggestionCache)
-//         if (this.suggestionCache.length) {
-//           this.suggestions = this.suggestionCache;
-//           this.showSuggestion = true;
-//           } else {
-//           this.showSuggestion = false;
-//         }
-//         },
-//     },
-//     components:{
-//       Search
-//     },
-    
-//   }
-</script>
-
 
 <style  scoped>
+
+.greeting-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  h1{
+    font-weight: 600;
+  }
+  h2{
+    font-weight: 200;
+  }
+}
   .form-box{
     display: flex;
     flex-direction: column;

@@ -56,17 +56,11 @@ const onMouseleave = (e)=>{
     </div>
 
 </template>
-<style lang="less" >
+<style lang="less">
 *{
   margin: 0;
   padding: 0;
-  font-family: 'Poppins',sans-serif;
-}
-h1{
-  color:aliceblue;
-  font-size: 3.5em;
-  text-transform: uppercase;
-  font-weight: 700;
+  // font-family: 'Poppins',sans-serif;
 }
 .favcard-container{
   position: relative;
@@ -107,7 +101,7 @@ h1{
   }
 .toggleIcon{
   position: fixed;
-  top: 20px;
+  top: 80px;
   right: 20px;
   width: 50px;
   height: 50px;
