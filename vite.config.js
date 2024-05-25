@@ -15,7 +15,7 @@ export default defineConfig({
     AutoImport({
       imports:["vue","vue-router","pinia"],
       resolvers: [ElementPlusResolver()],
-    }),
+    }), 
     Components({
       resolvers: [
         // 1. 配置elementPlus采用sass样式配色系统

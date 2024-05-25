@@ -11,10 +11,10 @@
   <div class="pagination">
     <button class = "page-button" :disabled = "currentPage == 1" @click="currentPage -= 1">上一页</button>
       <div 
-      v-for="(page,index) in totalPages" 
+      v-for="(page,index) in pages" 
       :key="index" 
       :class="{ 'page-item': true, active: currentPage === page }" 
-      @click="currentPage = page">
+      @click="changePage(page)">
       {{ page }}
       </div>
     <button class = "page-button" :disabled = "currentPage === totalPages" @click="currentPage += 1">下一页</button>
@@ -70,10 +70,30 @@ const paginatedCards = computed(()=>{
   const endIndex = startIndex + pageSize.value
   return cards.value.slice(startIndex,endIndex)
 })
-
+const pages = computed(()=>{
+  let cur = currentPage.value
+  let n = totalPages.value
+  if(totalPages.value<10) return Array.from({length: n}, (_, i) => i + 1); 
+  if(cur<=5){
+    return [1,2,3,4,5,6,'...',totalPages.value]
+  }else if(n-cur<5){
+    return[1,'...',n-5,n-4,n-3,n-2,n-1,n]
+  }else{
+    return [1,'...',cur-2,cur-1,cur,cur+1,cur+2,'...',totalPages.value]
+  }
+})
+const changePage=(page)=>{
+  if(page==='...'){
+    return
+  }else{
+    currentPage.value = page
+  }
+  
+}
 const totalPages = computed(()=>{
   return Math.ceil(cards.value.length/pageSize.value)
 })
+
 const handleQuery = ()=>{
   // images.value = searchQuery(props.searchOption,props.query,props.checkValue)
   cards.value = searchQuery(props.searchOption,props.query,props.checkValue)
@@ -120,106 +140,6 @@ const showCardInfo = (card=>{
 const hideCardInfo  =()=>{
   selectedCard.value = ''
 }
-  // export default{
-
-  //   props:['submit','query','searchOption','checkValue'],
-
-  //   emits:['query-received'],
-
-  //   mounted(){
-  //     this.handleQuery()
-  //   },
-    
-  //   data(){
-  //     return {
-  //       images:[],
-  //       selectedCard:"",
-  //       currentPage:1,
-  //       pageSize:20,
-  //     }
-  //   },
-
-  //   computed:{
-  //     paginatedImages() {
-  //       const startIndex = (this.currentPage - 1) * this.pageSize;
-  //       const endIndex = startIndex + this.pageSize;
-  //       return this.images.slice(startIndex, endIndex);
-  //     },
-  //     totalPages() {
-  //       return Math.ceil(this.images.length / this.pageSize);
-  //     },
-  //   },
-
-  //   methods:{
-  //     requireImage(imagePath){
-  //       return new URL('/../../../static/PTCG-CHS-Datasets-main/'+imagePath,import.meta.url).href;
-  //     },
-  //     handleQuery(){
-  //       this.images = []
-  //       if (this.searchOption === 'collection'){
-  //         this.images = searchCollection(this.query)
-  //       } else if (this.searchOption === 'card'){
-  //         this.images = searchCard(this.query,this.checkValue)
-  //       }
-        
-  //       console.log('接收到查询:',this.query,this.checkValue);
-  //       this.$emit('query-received',this.query+this.checkValue)
-
-  //     },
-  //     showCardInfo(image){
-  //       this.selectedCard = image
-  //     },
-  //     hideCardInfo(){
-  //       this.selectedCard = ""
-  //     },
-  //   },
-
-  //   watch:{
-  //     submit:{
-  //       handler:'handleQuery'
-  //     },
-  //   },
-  //   components:{
-  //     Details
-  //   },
-
-  // }
-
-  // console.log(ptcg);
-  
-  // const collections = ptcg.collections
-  // const checkboxLabels = {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
-  //       'S':'7','SR':'8','SSR':'9','CHR':'11','A':'12','CSR':'13','HR':'98','UR':'99'}
-  // function searchCollection(query){
-  //   const matches = collections.filter(item => item.name.includes(query));
-  //   const images = matches.flatMap(item=> item.cards.map(card=>card.image));
-  //   return images
-  // }
-  
-  // function searchCard(query,checkValue) {
-  //     const images = []
-  //     const existId = new Set()
-  //     for (const collection of collections){
-  //       const matches = collection.cards.filter(card=>{
-  //         const mappedRarity = checkValue.map(item=>parseInt(checkboxLabels[item]));
-  //         if (mappedRarity.length != 0){
-  //           const cardRarity = parseInt(card.details.rarity);
-  //           return card.name.includes(query) && mappedRarity.includes(cardRarity)
-  //         }
-  //         else{
-  //           return card.name.includes(query)
-  //         }
-  //       });
-  //       matches.forEach(card => {
-  //         // console.log(card)
-  //         if(!existId.has(card.id)){
-  //           images.push(card.image)
-  //         }
-  //         existId.add(card.id)
-  //       });
-  //     }
-  //     return images
-  //   }
 </script>
 
 <style scoped>

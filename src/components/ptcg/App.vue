@@ -7,7 +7,6 @@ import RandomShow from './src/RandomShow.vue';
 import FavCard from './src/FavCard.vue';
 import { throttle } from 'lodash';
 import {getpokeAPI} from '@/apis/ptcg'
-// import poke from "../../../static/PTCG-CHS-Datasets-main/pokemon.json";
 import {getptcgAPI} from '@/apis/ptcg';
 import { defineProps, ref, onMounted,defineEmits, computed,watch } from 'vue';  
 import { type } from 'jquery';
