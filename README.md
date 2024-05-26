@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/cya2001/blob/main/src/assets/showcase/homebanner.png)
 (https://github.com/cya2001/blob/main/src/assets/showcase/homebanner.png)
-
+(https://github.com/cya2001/PTCG-project/blob/main/src/assets/showcase/home.png)
 ![alt text](https://github.com/cya2001/src/assets/showcase/home.png)
 
 ```
