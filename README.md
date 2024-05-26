@@ -1,12 +1,12 @@
 # PTCG-project
 ```
-https://github.com/cya2001/src/assets/showcase/homebanner.png
+https://github.com/cya2001/blob/main/src/assets/showcase/homebanner.png
 ```
 ```
-https://github.com/cya2001/src/assets/showcase/home.png
+https://github.com/cya2001/blob/main/src/assets/showcase/home.png
 ```
 ```
-https://github.com/cya2001/src/assets/showcase/search.png
+https://github.com/cya2001/blob/main/src/assets/showcase/search.png
 ```
 
 ## Project Setup
