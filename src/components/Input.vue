@@ -1,15 +1,9 @@
 <script setup>
-import Header from './src/Header.vue';
-import Footer from './src/Footer.vue';
-import BannerShow from './src/BannerShow.vue';
-import Search from './src/Search.vue';
-import RandomShow from './src/RandomShow.vue';
-import FavCard from './src/FavCard.vue';
 import { throttle } from 'lodash';
 import {getpokeAPI} from '@/apis/ptcg'
 import {getptcgAPI} from '@/apis/ptcg';
-import { defineProps, ref, onMounted,defineEmits, computed,watch } from 'vue';  
-import { type } from 'jquery';
+import { defineProps, ref, onMounted, defineEmits, computed,watch } from 'vue';  
+
 
 const poke = getpokeAPI()
 onMounted(()=>{
@@ -31,11 +25,19 @@ const suggestionCache = ref([])
 const submit = ref(false)
 const banner = ref(true)
 
+const queryData = {
+    'searchOption':searchOption.value,
+    'query':query.value,
+    'checkValue':checkValue.value,
+}
+
+
 const props = defineProps({
   bannerFlag:{
     type:Boolean,
   }
 })
+const emits = defineEmits(['submit','query','searchOption','checkValue','showResult'])
 
 const handleBanner=(e)=>{
   banner.value = e
@@ -44,8 +46,13 @@ const handleBanner=(e)=>{
 
 const submitForm=()=>{
   submit.value = true
-  console.log('发送查询:',query.value)
   showResult.value = true
+  console.log('发送查询:',query.value)
+  emits('submit',submit.value)
+  emits('query',query.value)
+  emits('searchOption',searchOption.value)
+  emits('checkValue',checkValue.value)
+  emits('showResult',showResult.value)
   suggestionCache.value.push(query.value)
 }
 const handleQueryReceived = (res)=>{
@@ -53,6 +60,7 @@ const handleQueryReceived = (res)=>{
   submit.value = false
 }
 onMounted(()=>{window.addEventListener('scroll',throttle(handleScroll,200))})
+
 const handleScroll = ()=>{
     const scrollPostion = document.documentElement.scrollTop
     if (scrollPostion>500){
@@ -115,17 +123,16 @@ const handleClickOutside = (e)=>{
     }
   }
 }
+
 </script>
 
-<template>
-  <Header @bannerFlag="handleBanner"/>
-  <div class="greeting-box">
-      <h1 class="titel">Pokémon TCG Search!</h1>
-    <h2 class="subtitle">The Ultimate Pokémon Card Database ch.</h2>
-  </div>
 
-  <FavCard/>
-  <main>
+<template>
+
+    <div class="greeting-box">
+        <h1 class="titel">Pokémon TCG Search!</h1>
+        <h2 class="subtitle">The Ultimate Pokémon Card Database ch.</h2>
+    </div>    
     <div class="main-box">
 
       <form v-show="!showNewInput" class="form-box" @submit.prevent="submitForm">
@@ -184,34 +191,12 @@ const handleClickOutside = (e)=>{
         </div>
       </form>
       
-      <Search v-if="showResult" :submit = "submit" :query="query" :searchOption="searchOption" :checkValue="checkValue" @query-received="handleQueryReceived" />
-
-      <RandomShow  v-if="!showResult && !banner"/> 
-      <BannerShow v-if="!showResult && banner"/>
-      <!-- <Details v-if="selectedCard" :selectedCard="selectedCard" :requireImage="requireImage" @close ='hideCardInfo'/> -->
-      
-    </div>
-    <div  v-if="showResult" class="navi-box">
-        <div class="navi-button">
-            <router-link to="/">
-                <img class="navi-img" src="@/assets/navi.svg">
-            </router-link>
-        </div>
-        <div class="up-button" >
-            <button class="up-button-img">
-                <img class="up-img" src="@/assets/Pikachu.svg" @click="srcollToTop">
-            </button>
-        </div>
-    
     </div>
    
-  </main>
-  <Footer/>
+
 </template>
 
-
-
-<style  scoped>
+<style lang="less" scoped>
 
 .greeting-box{
   display: flex;

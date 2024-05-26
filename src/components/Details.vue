@@ -141,7 +141,7 @@ import {requireCollectionImage} from '@/apis/ptcg'
 import {requireAttribute} from '@/apis/ptcg'
 import {getptcgAPI} from '@/apis/ptcg'
 import {getpokeAPI} from '@/apis/ptcg'
-import { usecardStore } from "@/components/ptcg/stores/cardStore";
+import { usecardStore } from "@/components/stores/cardStore";
 
 const cardStore = usecardStore()
 

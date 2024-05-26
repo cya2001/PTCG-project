@@ -1,5 +1,5 @@
 <script setup>
-import { usecardStore } from "@/components/ptcg/stores/cardStore";
+import { usecardStore } from "@/components/stores/cardStore";
 import {requireImage} from '@/apis/ptcg'
 
 const cardStore = usecardStore()
@@ -15,7 +15,7 @@ const menuToggle=()=>{
     }
 }
 const favCard = cardStore.favcardList
-console.log(favCard)
+// console.log(favCard)
 const xMax = [-10,10]
 const yMax = [-10,10]
 const width = ref(215)
