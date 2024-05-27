@@ -2,13 +2,18 @@
     <div class="cardinfo-hideback">
         <div class="cardinfo-overlay" @click="handleCardInfoClick">
             <div class="cardinfo-content">
-                <div>
+                <div class="cardinfo-main">
                     <img :src="requireImage(selectedCard.image)" class="pkmn-card-large">
-                    <button @click="cardStore.addCard(selectedCard)">添加到收藏</button>
-                    <el-button type="warning" :icon="Star" circle />
+                    <div class="cardinfo-func">
+                        <el-button type="warning" circle
+                        :icon="checkStar(selectedCard)"  
+                        @click="starchange(selectedCard)"
+                        />
+                    </div>
+                    
                 </div>
                 
-                <div class="cardinfo-other">
+                <div class="cardinfo-other" v-if="selectedCard.cardType==='1'">
                     <div class="section">
                         <div class="cardinfo-head">
                           <div class="level-left">
@@ -42,7 +47,7 @@
                       <hr>
                     </div>
 
-                    <div class="section">
+                    <div class="section" v-if="selectedCard.details.abilityItemList">
                       <div class="cardinfo-attack">
                         <p class="heading">ATTACKS</p>
                         <div v-for="item in selectedCard.details.abilityItemList" class="cardinfo-attack-container ">
@@ -128,14 +133,115 @@
                     </div> -->
 
                 </div>
+                <div class="cardinfo-other" v-else-if="selectedCard.cardType==='2'">
+                  <div class="section">
+                        <div class="cardinfo-head">
+                          <div class="level-left">
+                            <div class="level-item">
+                              <span>
+                              <span class="bold">{{ selectedCard.name }}</span>                        
+                              </span>
+                              <span class="italic">
+                                  {{ selectedCard.details.cardTypeText }}--{{ selectedCard.details.trainerTypeText }}
+                              </span>                          
+                            </div>
+                          </div>
+                          <div class="level-right">
+                          </div>
+                        
+                      </div>
+                      <hr>  
+                    </div>
+                    <div class="section" v-if="selectedCard.details.ruleText">
+                      <div class="cardinfo-ability" >
+                        <p class="heading">RUles</p>
+                        <p class="cardinfo-sdesc">{{ selectedCard.details.ruleText}}</p>
+                      </div>
+                      <hr>
+                    </div>
+                    <div class="section">
+                      <div class="cardinfo-res">                  
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">Artist</p>
+                          {{ selectedCard.details.illustratorName[0] }}
+                        </div>
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">rarity</p>
+                          {{ selectedCard.details.rarityText }}
+                        </div>
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">number</p>
+                          {{ selectedCard.details.collectionNumber }}
+                        </div>
+
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">SET</p>
+                          <!-- <p v-for="i in selectedCard.details.commodityList">
+                            {{ i.commodityName }}
+                          </p> -->
+                          {{  selectedCard.details.commodityList[0].commodityName }}
+                        </div>
+                      
+                      <hr>                        
+                      </div>
+                    </div>
+                </div>
+                <div class="cardinfo-other" v-else>
+                  <div class="section">
+                        <div class="cardinfo-head">
+                          <div class="level-left">
+                            <div class="level-item">
+                              <span>
+                              <span class="bold">{{ selectedCard.name }}</span>                       
+                              </span>
+                              <span class="italic">
+                                  {{ selectedCard.details.cardTypeText }}-{{ selectedCard.details.energyTypeText }}
+                              </span>                          
+                            </div>
+                          </div>
+                          <div class="level-right">
+                          </div>
+                      </div>
+                      <hr>  
+                    </div>
+                    <div class="section" v-if="selectedCard.details.ruleText">
+                      <div class="cardinfo-ability" >
+                        <p class="heading">RUles</p>
+                        <p class="cardinfo-sdesc">{{ selectedCard.details.ruleText}}</p>
+                      </div>
+                      <hr>
+                    </div>
+                    <div class="section">
+                      <div class="cardinfo-res">                  
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">rarity</p>
+                          {{ selectedCard.details.rarityText }}
+                        </div>
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">number</p>
+                          {{ selectedCard.details.collectionNumber }}
+                        </div>
+
+                        <div class="cardinfo-res-box"> 
+                          <p class="heading">SET</p>
+                          <!-- <p v-for="i in selectedCard.details.commodityList">
+                            {{ i.commodityName }}
+                          </p> -->
+                          {{  selectedCard.details.commodityList[0].commodityName }}
+                        </div>
+                      
+                      <hr>                        
+                      </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import {Star} from '@element-plus/icons-vue'
-import { defineProps, ref, onMounted } from 'vue';  
+import {Star,StarFilled} from '@element-plus/icons-vue'
+import { defineProps, ref, onMounted, toRaw } from 'vue';  
 import {requireImage} from '@/apis/ptcg'
 import {requireCollectionImage} from '@/apis/ptcg'
 import {requireAttribute} from '@/apis/ptcg'
@@ -144,7 +250,7 @@ import {getpokeAPI} from '@/apis/ptcg'
 import { usecardStore } from "@/components/stores/cardStore";
 
 const cardStore = usecardStore()
-
+const star = ref()
 const ptcg = getptcgAPI()
 
 
@@ -202,7 +308,23 @@ onMounted(() => {
     const hideCardInfo = () => {  
       closeCardInfo('close');  
     };  
- 
+
+    const starchange=(card)=>{
+      if(checkStar(card)==Star){
+        cardStore.addCard(card)
+      }else{
+        cardStore.delCard(card)
+      }
+    }
+    const checkStar=(card)=>{
+      let favcard = cardStore.favcardList
+      favcard = toRaw(favcard)
+      if(favcard.length!=0 && favcard.find(item=>item.id===card.id)){
+        return StarFilled
+      }else{
+        return Star
+      }
+    }
 </script>
 
 <style scoped>
@@ -271,7 +393,7 @@ hr {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     .section{
       display: flex;
       flex-direction: column;
@@ -331,13 +453,18 @@ hr {
     align-items: center;
     text-align: center;
 }
-
+.cardinfo-main{
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+}
 .pkmn-card-large {
-    min-width: fit-content;
-    height: 80%;
-    margin: 15px;
+    width: 300px;
+    height: auto; 
     border-radius: 20px;
     box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.45);
+    margin-bottom: 20px;
 }
 
 .collection-cover {
