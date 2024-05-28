@@ -3,6 +3,7 @@ import { throttle } from 'lodash';
 import {getpokeAPI} from '@/apis/ptcg'
 import {getptcgAPI} from '@/apis/ptcg';
 import { defineProps, ref, onMounted, defineEmits, computed,watch } from 'vue';  
+import { setSearchHistory,getSearchHistory } from '@/apis/localstore';
 
 
 const poke = getpokeAPI()
@@ -84,7 +85,7 @@ const handleInput=()=>{
   },300)
 }
 const generateSuggestions=(query)=>{
-  console.log('suggestionCache:',suggestionCache.value)
+  // console.log('suggestionCache:',suggestionCache.value)
   const suggestions=[]
   for(let item of poke){
     if(item[2].includes(query)){
@@ -104,8 +105,10 @@ const selectSuggestion = (suggestion)=>{
 }
 
 const handleSuggest = ()=>{
-  if(suggestionCache.value.length){
-    suggestions.value = suggestionCache.value
+  let his = getSearchHistory()
+  his = JSON.parse(his)
+  if(his.length){
+    suggestions.value = his
     showSuggestion.value = true
   }else{
     showSuggestion.value = false
@@ -123,7 +126,10 @@ const handleClickOutside = (e)=>{
     }
   }
 }
+const showSearchHistory=()=>{
+  let his = getSearchHistory
 
+}
 </script>
 
 

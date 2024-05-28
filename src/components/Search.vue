@@ -29,6 +29,7 @@ import { defineProps, ref, onMounted,defineEmits, computed,watch } from 'vue';
 import {requireImage} from '@/apis/ptcg'
 import {getptcgAPI} from '@/apis/ptcg'
 import {getpokeAPI} from '@/apis/ptcg'
+import { setSearchHistory,getSearchHistory } from '@/apis/localstore';
 
 const ptcg = getptcgAPI()
 
@@ -59,6 +60,8 @@ const currentPage=ref(1)
 const pageSize = ref(20)
 const checkboxLabels = {'无标记':'10','C':'1','U':'2','R':'3','PR':'4','RR':'5','RRR':'6',//
 'S':'7','SR':'8','SSR':'9','CHR':'11','A':'12','CSR':'13','HR':'98','UR':'99'}
+const foundCards = ref(false)
+
 
 onMounted(()=>{
   handleQuery()
@@ -97,6 +100,10 @@ const totalPages = computed(()=>{
 const handleQuery = ()=>{
   // images.value = searchQuery(props.searchOption,props.query,props.checkValue)
   cards.value = searchQuery(props.searchOption,props.query,props.checkValue)
+  if(cards.value.length){
+    foundCards.value = true
+    setSearchHistory(props.query)
+  }else foundCards.value = false
   console.log('接受到查询',props.query,props.checkValue)
   emit('query-received',props.query+props.checkValue)
 }
