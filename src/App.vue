@@ -1,39 +1,43 @@
 <template>
-    <Header @bannerFlag="handleBanner"/>
-    <FavCard/>
-          <Input 
+    <div class="app-container">
+      <Header @bannerFlag="handleBanner"/>
+      <FavCard/>
+      <main class="main-content">
+        <Input 
           @submit = "handleSubmit" 
           @query="handleQuery" 
           @searchOption="handleSearchOption" 
           @checkValue="handleCheckValue" 
           @showResult="handleShowResult" />
-  
         
         <Search v-if="showResult" 
-        :submit = "submit" 
-        :query="query" 
-        :searchOption="searchOption"
-        :checkValue="checkValue" 
-        @query-received="handleQueryReceived" />
-  
-        <RandomShow  v-if="!showResult && !banner"/> 
-        <BannerShow v-if="!showResult && banner"/>
+          :submit = "submit" 
+          :query="query" 
+          :searchOption="searchOption"
+          :checkValue="checkValue" 
+          @query-received="handleQueryReceived" />
         
-      <div  v-if="showResult" class="navi-box">
-          <div class="navi-button">
-              <router-link to="/">
-                  <img class="navi-img" src="@/assets/navi.svg">
-              </router-link>
-          </div>
-          <div class="up-button" >
-              <button class="up-button-img">
-                  <img class="up-img" src="@/assets/Pikachu.svg" @click="srcollToTop">
-              </button>
-          </div>
+        <div v-if="!showResult" class="showcase-container">
+          <RandomShow v-if="!banner"/> 
+          <BannerShow v-if="banner"/>
+        </div>
+      </main>
       
+      <div v-if="showResult" class="navi-box">
+        <div class="navi-button">
+          <router-link to="/" title="返回首页">
+            <img class="navi-img" src="@/assets/navi.svg" alt="返回首页">
+          </router-link>
+        </div>
+        <div class="up-button">
+          <button class="up-button-img" @click="srcollToTop" title="回到顶部">
+            <img class="up-img" src="@/assets/Pikachu.svg" alt="回到顶部">
+          </button>
+        </div>
       </div>
      
-    <Footer/>
+      <Footer/>
+    </div>
   </template>
   
 
@@ -109,40 +113,110 @@ const handleShowResult = (q)=>{
 </script>
 
 
-<style  scoped>
-  .navi-box{
+<style scoped>
+  .app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+  }
+
+  .main-content {
+    flex: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .showcase-container {
+    width: 100%;
+    margin: 40px 0;
+  }
+
+  .navi-box {
     position: fixed;
     right: 0px;
     bottom: 10px;
     height: 140px;
     width: 70px;
-    /* border: 2px solid black; */
     display: flex;
-    flex-direction: column; /* 根据需要选择flex方向，默认为row */
-    justify-content: center; /* 控制垂直方向居中 */
-    align-items: center; /* 控制水平方向居中 */
-    /* text-align: center; 控制文本居中 */
-    background-color: rgb(243, 241, 241);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(243, 241, 241, 0.95);
     margin-right: 5px;
-
-
+    border-radius: 10px 0 0 10px;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    transition: all 0.3s ease;
   }
 
-  .navi-img{
+  .navi-box:hover {
+    background-color: rgba(243, 241, 241, 1);
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .navi-button {
+    margin-bottom: 10px;
+    transition: transform 0.2s ease;
+  }
+
+  .navi-button:hover {
+    transform: scale(1.1);
+  }
+
+  .navi-img {
     width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
   }
-  .up-img{
+
+  .navi-img:hover {
+    opacity: 0.8;
+  }
+
+  .up-img {
     width: 70px;
+    height: 70px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
   }
-  .up-button{
+
+  .up-img:hover {
+    transform: translateY(-3px);
+  }
+
+  .up-button {
     margin: 5px;
-
   }
+
   .up-button-img {
-    border: none;  /* 移除按钮的边框样式 */
-    background-color: transparent;  /* 设置按钮的背景为透明 */
-    padding: 0;  /* 移除按钮的内边距 */
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
   }
 
+  @media (max-width: 768px) {
+    .main-content {
+      padding: 0 10px;
+    }
 
+    .navi-box {
+      width: 60px;
+      height: 120px;
+    }
+
+    .navi-img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .up-img {
+      width: 60px;
+      height: 60px;
+    }
+  }
 </style>
