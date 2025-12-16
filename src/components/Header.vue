@@ -5,7 +5,7 @@ const bannerFlag = ref(true)
 const emit = defineEmits(['bannerFlag'])
 
 const handleBanner = ()=>{
-  bannerFlag.modelValue = !bannerFlag.modelValue
+  bannerFlag.value = !bannerFlag.value
   emit('bannerFlag',bannerFlag.value)
 }
 

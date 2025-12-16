@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import Details from './Details.vue'
 import {requireImage} from '@/apis/ptcg'
 
